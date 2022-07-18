@@ -8,7 +8,7 @@ public class roda implements Serializable {
 	// Atributos da classe roda
 
 	private static final long serialVersionUID = 1L;
-	boolean calib;
+	private boolean calib;
 	
 	// Método construtor do objeto roda
 	

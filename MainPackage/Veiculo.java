@@ -2,7 +2,7 @@ package MainPackage;
 import java.util.Random;
 import java.io.Serializable;
 
-public class car implements Serializable{
+public class Veiculo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -19,24 +19,18 @@ public class car implements Serializable{
 	
 	roda rodas[] = {new roda(),new roda(),new roda(),new roda()}; // array de objetos roda
 	
-	double combustivel;
+	double combustivel = 3.5;
 	
 	String desenho[] = {"    ____\n"," __/  |_ \\_\n","|  _     _``-.  \n","'-(_)---(_)--'\n\n\n"};
 	
 	
 	// Método construtor do objeto carro
-	public car(boolean ipva, roda[] rodas, double combustivel, boolean venda, int dist) {
+	public Veiculo(boolean ipva, roda[] rodas, boolean venda, int dist) {
 		Random r = new Random();
 		this.dist = dist;
 		this.ipva = r.nextBoolean();
 		this.rodas = rodas;
 		this.venda = r.nextBoolean();
-		
-		// verificando se o carro vai começar com 3.5l de combustivel
-		if(ipva == true && venda == true) { 
-			this.combustivel = 3.5;
-		}
-		
 		qc++;
 		this.id = qc;
 	}
@@ -44,21 +38,19 @@ public class car implements Serializable{
 	
 	// Método construtor do objeto carro, porém, sem a necessidade de passar argumentos para criar o objeto.
 	// Aqui fazemos uma sobrecarga do método construtor.
-	public car() {
+	public Veiculo() {
+		
+		Random r = new Random();
+		this.ipva = r.nextBoolean();
+		this.venda = r.nextBoolean();
 		qc++;
 		this.id = qc;
 	}
 
 
-	
 	// Getter and Setters da classe car.
 	public int getId() {
 		return id;
-	}
-
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 
@@ -100,6 +92,23 @@ public class car implements Serializable{
 	public void setCombustivel(double combustivel) {
 		this.combustivel = combustivel;
 	}
-
+	
+	public void imprimeDesenho() {
+		String aux = "";
+		for(int i = 0; i < dist;i++) {
+			aux = "    " + aux;
+		}
+		for(int i = 0; i < 4; i++) {
+			System.out.print(aux + desenho[i]);
+		}
+	}
+	public boolean isCalibAll() {
+		for(int i =0; i<4; i++) {
+			if(rodas[i].isCalib() == false) {
+				return false;
+			}
+		}	
+		return true;
+	}
 
 }

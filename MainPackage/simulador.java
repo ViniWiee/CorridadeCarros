@@ -41,9 +41,11 @@ public class simulador {
 		// Também serve para nos dar um índice para inserir um carro na lista.
 		
 		// Aqui criamos nosso array de tamanho 20, que será do tipo car. Isso significa que só será possível ter um total de 20 objetos do tipo car.
-		car[] Lista = new car[20];
+		Veiculo[] Lista = new Veiculo[20];
 		
-		System.out.println("Deseja abrir um arquivo já existente? Digite 1");
+		System.out.println("-------------------------------------------------------------------\n"
+				+ "Deseja abrir um arquivo já existente? Digite 1 \nSe não deseja abrir um arquivo, digite "
+				+ "qualquer outro número.\n-------------------------------------------------------------------\n \n");
 		
 		int resposta = Integer.parseInt(scan.nextLine());
 		
@@ -52,7 +54,7 @@ public class simulador {
 				Lista = ler();
 				for(int i = 0; i < 20; i++) {
 					if (Lista[i] != null) {
-							car.qc +=1;
+							Veiculo.qc +=1;
 					}
 				}
 			}catch(Exception ex) {
@@ -63,87 +65,108 @@ public class simulador {
 		
 		
 		
-		System.out.println("A corrida está prestes a começar!! Confira abaixo");
+		System.out.println("------------------------------------------------------------------------------------------------\n"
+				+ "A corrida está prestes a começar!! \n"
+				+ "A pista é impressa a cada iteração do loop.\n"
+				+ "É possível interagir utilizando o menu do usuário que também é impresso todo loop.\n"
+				+ "É possível que um carro comece sem combustível e não se movimente durante as primeiras iterações.\n"
+				+ "Quanto mais carros forem inseridos, mais interessante fica o programa c:\n"
+				+ "Confira abaixo.\n------------------------------------------------------------------------------------------------\n");
 		
 		// Está será nosso loop principal. É muito comum aplicações e jogos rodarem em um loop.
 		while(state) {
 			
 			// Primeiro, mostramos tudo que temos na nossa pista. O método imprimir todos imprime todos os objetos carro da lista.
 			imprimirTodos(Lista);
-			
+			if(simulador.aux == 0) {
+				System.out.println("-------------------------------\n A pista está vazia no momento.\n------------------------------- \n");
+			}
 			// Esta é nossa mensagem para que possamos interagir com o usuário
-			System.out.println("Deseja continuar? digite 0. Deseja sair do loop? Digite 1. Deseja remover um veículo? Digite 2. \nDeseja incluir um veículo? Digite 3."
-					+ "Deseja salvar a corrida? Digita 4."
-					+ "\n");
+			System.out.println("Digite 0 para que a corrida siga.\n"
+					+ "Digite 1 para finalizar a execução do programa. \n"
+					+ "Digite 2 se deseja remover um dos veículos da pista. \n"
+					+ "Digite 3 se deseja incluir um veículo na pista. Ele será inserido no final. \n"
+					+ "Digite 4 se deseja salvar a corrida em seu estado atual.\n"
+					+ "Digite 5 se deseja imprimir os dados de um carro em específico");
 			
 			// Utilizamos o método nextLine que lê a próxima linha inserida no console pelo usuário.
-			String response = scan.nextLine();
+			try{
+				String response = scan.nextLine();
 			
-			// Utilizamos a função parseInt para mudar nossa resposta do tipo String para Inteiro. Isso facilita a utilização do Switch.
-			int resp = Integer.parseInt(response);
-			
-			
-			// Esta é a estrutura switch que vai nos ajudar a tomar a decisão correta para cada interação do usuário.
-			switch(resp) {
-			
-				// Caso 0, sabaremos que o usuário deseja simplesmente continuar sem mudar absolutamente nada. Iremos simplesmente movimentar
-				// todos os carros da lista, pagar um ipva aleatório, abastecer um carro aleatório e calibrar um pneu aleatório.
-			
-				case 0:
-					try {
-						Lista = movimentarTodos(Lista);
-						int ri = r.nextInt(car.qc);
-						
-						Lista = pagarIpva(ri,Lista);
-						
-						for(int i = 0; i < car.qc; i++) {
-							Lista = abastecer(i, Lista, 0 + (1.0 -0)* r.nextDouble());
-							Lista = calibrarUm(i, Lista);
-							}
-					}catch(Exception ex) {
-						
-					}
-					break;
+				// Utilizamos a função parseInt para mudar nossa resposta do tipo String para Inteiro. Isso facilita a utilização do Switch.
+				int resp = Integer.parseInt(response);
 				
-				// Caso 1, sairemos do loop e fecharemos o objeto Scan.
-				case 1:
-					state = false;
-					sair(scan);
-					break;
-					
-				// Caso 2, removeremos o carro na posição dada pelo usuário e diminuiremos a variável aux que nos diz quantos carros estão na pista.
-				case 2:
-					System.out.println("Digite a posição do carro que deseja remover.");
-					String pos = scan.nextLine();
-					Lista = remover(Integer.parseInt(pos), Lista);
-					break;
-				// Caso 3, incluiremos um carro no final da pista.
-				case 3:
-					try {
-						Lista = incluir(simulador.aux, Lista);
+				
+				// Esta é a estrutura switch que vai nos ajudar a tomar a decisão correta para cada interação do usuário.
+				switch(resp) {
+				
+					// Caso 0, sabaremos que o usuário deseja simplesmente continuar sem mudar absolutamente nada. Iremos simplesmente movimentar
+					// todos os carros da lista, pagar um ipva aleatório, abastecer um carro aleatório e calibrar um pneu aleatório.
+				
+					case 0:
+						try {
+							Lista = movimentarTodos(Lista);
+							int ri = r.nextInt(Veiculo.qc);
+							
+							Lista = pagarIpva(ri,Lista);
+							
+							for(int i = 0; i < Veiculo.qc; i++) {
+								Lista = abastecer(i, Lista, 0 + (0.55)* r.nextDouble());
+								Lista = calibrarUm(i, Lista);
+								}
+						}catch(Exception ex) {
+							
+						}
 						break;
-					}catch (Exception ex){
-						System.out.println(ToString(ex));
-					}
 					
-				case 4: 
-					gravar(Lista);
-					break;
+					// Caso 1, sairemos do loop e fecharemos o objeto Scan.
+					case 1:
+						state = false;
+						sair(scan);
+						break;
+						
+					// Caso 2, removeremos o carro na posição dada pelo usuário e diminuiremos a variável aux que nos diz quantos carros estão na pista.
+					case 2:
+						System.out.println("Digite a posição do carro que deseja remover.");
+						String pos = scan.nextLine();
+						Lista = remover(Integer.parseInt(pos), Lista);
+						break;
+					// Caso 3, incluiremos um carro no final da pista.
+					case 3:
+						try {
+							Lista = incluir(simulador.aux, Lista);
+							break;
+						}catch (Exception ex){
+							System.out.println(ex.toString());
+						}
+						
+					// Caso 4, gravamos o atual estado da corrida em um arquivo .dat
+					case 4: 
+						gravar(Lista);
+						break;
+						
+					// Caso 5, mostraremos as informações de um determinado carro em uma posição da pista.
+					case 5:
+						System.out.println("Digite a posição do carro que deseja ver as informações.");
+						String res = scan.nextLine();
+						informar(Integer.parseInt(res) -1, Lista);
+						break;
+					default:
+						System.out.print("Não foi possível entender o input. \n");
+				}
+			}catch(Exception ex) {
+				System.out.print("Não foi possível entender o input.\n");
 			}
 		}
 	}
-		
-	private static char[] ToString(Exception ex) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	// A função incluir insere um objeto car na Lista de carros, utilizando a variável aux para indicar
 	// a ultima posição vazia da lista.
-	private static car[] incluir(int aux, car[] Lista) {
+	private static Veiculo[] incluir(int aux, Veiculo[] Lista) {
 		
 		if(simulador.aux < 20) {
-			Lista[aux] = new car();
+			Lista[aux] = new Veiculo();
 			simulador.aux += 1;
 			return Lista;
 		}else {
@@ -157,7 +180,7 @@ public class simulador {
 	// O método remover remove um carro em dada posição da lista.
 	// Exemplo: Se o ususário quiser remover o carro da primeira posição, o carro na posição Lista[0] será removido.
 	// Isso é feito a partir da cópia de duas listas resultando em uma terceira lista que não possui o elemento em questão.
-	private static car[] remover(int pos, car[] Lista) {
+	private static Veiculo[] remover(int pos, Veiculo[] Lista) {
 		
 		try{
 			if (Lista[pos-1] == null || pos > Lista.length ) { 
@@ -165,13 +188,13 @@ public class simulador {
             return Lista;
 			} 
 		
-			car[] copia = new car[20];
+			Veiculo[] copia = new Veiculo[20];
 			
 			System.arraycopy(Lista, 0, copia, 0, pos-1);
 			System.arraycopy(Lista, pos, copia, pos-1, 19-simulador.aux);
 			
 			simulador.aux -=1;
-			car.qc -= 1;
+			Veiculo.qc -= 1;
 	
 			return copia;
 		}catch(Exception ex) {
@@ -182,29 +205,29 @@ public class simulador {
 	}
 	
 	// A função abastecer aumenta o atributo combustível pelo valor passado na variável combustivel.
-	private static car[] abastecer(int aux, car[] Lista, double combustivel) {
-		
-		Lista[aux].combustivel += combustivel;
+	private static Veiculo[] abastecer(int aux, Veiculo[] Lista, double combustivel) {
+
+		Lista[aux].setCombustivel(Lista[aux].getCombustivel() + combustivel);
 		return Lista;
 		
 	}
 	
 	// O método CalibrarUm muda o atributo isCalib de uma roda definida pela variável aux.
 	// Neste caso estamos randomizando uma das 4 rodas do carro na posição aux.
-	private static car[] calibrarUm(int aux, car[] Lista) {
+	private static Veiculo[] calibrarUm(int aux, Veiculo[] Lista) {
 		
-		Random r = new Random();
-		
-		Lista[aux].rodas[r.nextInt(4)].calib = true;
+		for(int i = 0; i < 4 ;i++) {
+			Lista[aux].rodas[i].setCalib(true);
+		}
 		return Lista;
 	}
 	
 	// A função calibraTodos muda o atributo isCalib de todas as rodas de um carro para True.
-	private static car[] calibrarTodos(car[] Lista) {
+	private static Veiculo[] calibrarTodos(Veiculo[] Lista) {
 		
-		for(int i = 0; i < car.qc ; i++ ) {
+		for(int i = 0; i < Veiculo.qc ; i++ ) {
 			for(int k = 0; k < 4; k++) {
-				Lista[i].rodas[k].calib = true;
+				Lista[i].rodas[k].setCalib(true);
 			}
 		}
 		
@@ -214,12 +237,12 @@ public class simulador {
 	
 	// A função esvaziarUm muda o atributo isCalib para False de um pneu aleatório de um carro na posição Aux.
 	// Neste trabalho esta função não foi utilizada nenhuma vez.
-	private static car[] esvaziarUm(int aux, car[] Lista) {
+	private static Veiculo[] esvaziarUm(int aux, Veiculo[] Lista) {
 		
 		
 		Random r = new Random();
 		
-		Lista[aux].rodas[r.nextInt(4)].calib = false;
+		Lista[aux].rodas[r.nextInt(4)].setCalib(false);
 		return Lista;
 		
 		
@@ -227,11 +250,11 @@ public class simulador {
 	
 	// A função esvaziarTodos muda o atriuto isCalib de todas as rodas de um carro na posição aux.
 	// Esta função não é utilizada nenhuma vez durante o trabalho.
-	private static car[] esvaziarTodos(int aux, car[] Lista) {
+	private static Veiculo[] esvaziarTodos(int aux, Veiculo[] Lista) {
 		
-		for(int i = 0; i < car.qc ; i++ ) {
+		for(int i = 0; i < Veiculo.qc ; i++ ) {
 			for(int k = 0; k < 4; k++) {
-				Lista[i].rodas[k].calib = false;
+				Lista[i].rodas[k].setCalib(false);
 			}
 		}
 		
@@ -245,7 +268,7 @@ public class simulador {
 	// se ele possui no mínimo 0.55 L de combustível para que possa andar.
 	// Caso alguma dessas condições não for atendida, nada será feito e retornaremos a lista exatamente como ela estava
 	// antes de entrar no método.
-	private static car[] movimentarUm(int pos, car[] Lista) {
+	private static Veiculo[] movimentarUm(int pos, Veiculo[] Lista) {
 		
 		if(Lista[pos] == null) {
 			return Lista;
@@ -262,11 +285,9 @@ public class simulador {
 				return Lista;
 			}
 		}
-		if(Lista[pos].combustivel >= 0.55){
-			
-			for(int i = 0; i < 4; i++) {
-				Lista[pos].desenho[i] = "  " + Lista[pos].desenho[i];
-			}
+		if(Lista[pos].getCombustivel() >= 0.55){
+			Lista[pos].setDist(Lista[pos].getDist() + 1);
+			Lista[pos].setCombustivel(Lista[pos].getCombustivel() - 0.55);
 		}
 		
 		return Lista;
@@ -274,32 +295,42 @@ public class simulador {
 	
 	// A função movimntarTodos utilizada função movimentarUm para que possamos executa-las em toda nossa lista de carros.
 	// Para isso, checaremos a quantidade de carros utilizando a variável car.qc (Quantidade de Carros)
-	private static car[] movimentarTodos(car[] Lista) {
+	private static Veiculo[] movimentarTodos(Veiculo[] Lista) {
 		
-		for(int i = 0; i < car.qc; i++) {
+		for(int i = 0; i < Veiculo.qc; i++) {
 			Lista = movimentarUm(i, Lista);
 		}
 		return Lista;
 	}
 	
-	
+	private static void informar(int pos, Veiculo[] Lista) {
+		try {
+		System.out.print("------------------------------------------\n"
+				+ "ID: " +Lista[pos].getId() +"\n"
+				+ "Seu ipva foi pago?:" + Lista[pos].isIpva() + "\n"
+				+ "Seu combustivel é de :" + Lista[pos].getCombustivel() + "\n"
+				+ "Suas rodas estão todas calibradas?:" + Lista[pos].isCalibAll()
+				+ "\n------------------------------------------\n"
+				);
+		}catch (Exception ex){
+			System.out.print("As informações não puderam ser informadas.");
+		}
+	}
 	// A função ImprimirUm imprime a matriz do atributo desenho do carro em questão no console.
 	// A matriz é composta de 4 linhas de string que compoem o desenho, por isso nosso loop terá 4 execuções.
-	private static void imprimirUm(int aux, car[] Lista) {
-		for(int i = 0; i <4; i ++) {
-			System.out.print(Lista[aux].desenho[i]);
-		}
+	private static void imprimirUm(int aux, Veiculo[] Lista) {
+		Lista[aux].imprimeDesenho();
 	}
 	
 	// A função imprimirTodos utiliza a função imprimirUm para imprimir todos os carros no console.
 	// Para isso, utilizamos a variável car.qc para saber quantos carros existem na lista.
-	private static void imprimirTodos(car[] Lista) {
+	private static void imprimirTodos(Veiculo[] Lista) {
 		
 		
-		for(int i = 0; i < car.qc; i++) {
+		for(int i = 0; i < Veiculo.qc; i++) {
 			if(Lista[i] != null) {
 				if(Lista[i].id != -1) {
-					imprimirUm(i, Lista);
+					imprimirUm(i,Lista);
 				}
 			}
 		}
@@ -308,13 +339,13 @@ public class simulador {
 	}
 	
 	// A função pagarIpva modifica o atributo ipva para True de um carro definido pela variável id.
-	private static car[] pagarIpva (int id, car[] Lista){
-		Lista[id].ipva = true;
+	private static Veiculo[] pagarIpva (int id, Veiculo[] Lista){
+		Lista[id].setIpva(true);
 		return Lista;
 	}
 	
 	// A função gravar cria um arquivo Carros.dat e grava os elementos do nosso array de carros neste arquivo.
-	private static void gravar(car[] Lista) {
+	private static void gravar(Veiculo[] Lista) {
 		File arquivo = new File("Carros.dat");
 		try {
 			FileOutputStream fous = new FileOutputStream(arquivo);
@@ -332,17 +363,23 @@ public class simulador {
 	
 	// A função ler abre um arquivo Carros.dat e copia seu conteúdo para um array de carros chamado Lista. 
 	// Logo em seguida retornamos esse array para utiliza-lo em nosso programa.
-	private static car[] ler() {
+	private static Veiculo[] ler() {
 		File arquivo = new File("Carros.dat");
-		car[] Lista;
+		Veiculo[] Lista;
 		try {
 			FileInputStream fis = new FileInputStream(arquivo);
 			ObjectInputStream oin = new ObjectInputStream(fis);
 			
-			Lista = (car[]) oin.readObject();
+			Lista = (Veiculo[]) oin.readObject();
 			
 			oin.close();
 			fis.close();
+			
+			for (int i = 0; i <20;i++) {
+				if(Lista[i] != null) {
+					simulador.aux +=1;
+				}
+			}
 			return Lista;
 			
 		} catch(Exception ex) {
